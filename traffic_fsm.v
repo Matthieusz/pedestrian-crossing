@@ -51,7 +51,7 @@ module traffic_fsm (
 	      endcase
 	    end
 	
-	    if (state == S_PED_BLINK_GREEN && counter[24] == 0)
+	    if (state == S_PED_BLINK_GREEN)
 	      blink <= ~blink;
 	  end
 	end
@@ -81,7 +81,7 @@ module traffic_fsm (
 	  if (counter == 0) begin
 	    if (prev_state == S_CAR_YELLOW)       next_state = S_PED_GREEN;
 	    else if (prev_state == S_PED_BLINK_GREEN) next_state = S_CAR_RED_YELLOW;
-	    else next_state = S_CAR_GREEN; // fallback awaryjny
+	    else next_state = S_CAR_GREEN;
 	  end
 	end
 
