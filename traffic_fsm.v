@@ -23,7 +23,8 @@ module traffic_fsm (
 
   localparam SEC_1 = 1;
   localparam SEC_4 = 4 * SEC_1;
-  localparam SEC_5 = 5 * SEC_1;
+  localparam SEC_5 = 5 * SEC_1;	
+  localparam SEC_2 = 2 * SEC_1;
 
   reg blink;  // uzywane do migania zielonego swiatla
 
@@ -43,7 +44,7 @@ module traffic_fsm (
 	      case (next_state)
 	        S_CAR_GREEN:       counter <= SEC_5;
 	        S_CAR_YELLOW:      counter <= SEC_1;
-	        S_ALL_RED:         counter <= SEC_1;
+	        S_ALL_RED:         counter <= SEC_2;
 	        S_PED_GREEN:       counter <= SEC_4;
 	        S_PED_BLINK_GREEN: counter <= SEC_1;
 	        S_CAR_RED_YELLOW:  counter <= SEC_1;
