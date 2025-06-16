@@ -1,32 +1,36 @@
-module mytestbenchmodule();
-reg clk;
-initial clk <= 0;
-always #50  clk <= ~clk;
-	
-reg seed_stb;	
-reg rst;
-initial 
-begin	 
-	seed_stb <=0;
-	rst <= 0;
-	#100;	
-	rst <= 1;
-	#500;
-	rst <= 0;
-	#505;
-	seed_stb <= 0;
-	@(posedge clk);
-	seed_stb <= 1;
-	@(posedge clk);
-	seed_stb <= 0;
-end
+`timescale 1ns / 1ps
 
-random1 ran1(
-	.RST(rst),
-	.CLK(clk),
-	.SEED_DAT(16'hCAFE),
-	.SEED_STB(seed_stb),
-	.ENABLE(1),
-	.RANDOM_WORD()
-);	
-endmodule	
+module tb_traffic;
+
+  reg clk = 0;
+  reg rst = 1;
+
+  wire road_red, road_yellow, road_green;
+  wire ped_red, ped_green;
+
+  traffic_fsm uut (
+    .clk(clk),
+    .rst(rst),
+    .ROAD_RED(road_red),
+    .ROAD_YELLOW(road_yellow),
+    .ROAD_GREEN(road_green),
+    .PED_RED(ped_red),
+    .PED_GREEN(ped_green)
+  );
+
+  // Zegar 50 MHz
+  always #10 clk = ~clk;
+
+  initial begin
+    $dumpfile("traffic.vcd");
+    $dumpvars(0, tb_traffic);
+
+    // Reset przez 200 ns
+    #200 rst = 0;
+
+    // Symulacja przez ~60 sekund (zegar 20ns -> 50MHz)
+    #50000;
+    $finish;
+  end
+
+endmodule
